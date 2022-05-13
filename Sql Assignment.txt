@@ -1,0 +1,617 @@
+Salespeople table:-
+
++------+---------+-----------+------+
+| SNUM | SNAME   | CITY      | COMM |
++------+---------+-----------+------+
+| 1001 | Peel    | London    |   12 |
+| 1002 | Serres  | SanJose   |   13 |
+| 1004 | Motika  | London    |   11 |
+| 1007 | Rifkin  | Barcelona |   15 |
+| 1003 | AxelRod | New York  |   10 |
+| 1008 | Fran    | London    |   25 |
++------+---------+-----------+------+
+
+Customers table:-
+
++------+----------+---------+--------+------+
+| CNUM | CNAME    | CITY    | RATING | SNUM |
++------+----------+---------+--------+------+
+| 2001 | Hoffman  | London  |    100 | 1001 |
+| 2002 | Giovanni | Rome    |    200 | 1003 |
+| 2003 | Liu      | SanJose |    200 | 1002 |
+| 2004 | Grass    | Berlin  |    300 | 1002 |
+| 2006 | Clemens  | London  |    100 | 1001 |
+| 2008 | Cisneros | SanJose |    300 | 1007 |
+| 2007 | Pereira  | Rome    |    100 | 1004 |
++------+----------+---------+--------+------+
+
+Orders table:-
+
++------+---------+------------+------+------+
+| ONUM | AMT     | ODATE      | CNUM | SNUM |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-03-10 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-03-10 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-03-10 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-03-10 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-03-10 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-04-10 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-04-10 | 2004 | 1002 |
+| 3008 | 4723.00 | 1990-05-10 | 2006 | 1001 |
+| 3010 | 1309.95 | 1990-06-10 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-06-10 | 2006 | 1001 |
++------+---------+------------+------+------+
+
+1) List all the columns of the Salespeople table.
+ 
+Command:-
+
+desc Salespeople;
+
+Output:-
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| SNUM  | int(11)     | YES  |     | NULL    |       |
+| SNAME | varchar(20) | YES  |     | NULL    |       |
+| CITY  | varchar(20) | YES  |     | NULL    |       |
+| COMM  | int(11)     | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+2) List all customers with a rating of 100.
+
+Command:-
+
+Select * from Customers where RATING = 100;
+
+Output:-
+
++------+---------+--------+--------+------+
+| CNUM | CNAME   | CITY   | RATING | SNUM |
++------+---------+--------+--------+------+
+| 2001 | Hoffman | London |    100 | 1001 |
+| 2006 | Clemens | London |    100 | 1001 |
+| 2007 | Pereira | Rome   |    100 | 1004 |
++------+---------+--------+--------+------+
+3 rows in set (0.01 sec)
+
+4) Arrange the Order table by descending customer number.
+
+Command:-
+
+select * from orders order by CNUM desc;
+
+Output:-
++------+---------+------------+------+------+
+| ONUM | AMT     | ODATE      | CNUM | SNUM |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-03-10 | 2008 | 1007 |
+| 3006 | 1098.16 | 1990-03-10 | 2008 | 1007 |
+| 3002 | 1900.10 | 1990-03-10 | 2007 | 1004 |
+| 3008 | 4723.00 | 1990-05-10 | 2006 | 1001 |
+| 3011 | 9891.88 | 1990-06-10 | 2006 | 1001 |
+| 3007 |   75.75 | 1990-04-10 | 2004 | 1002 |
+| 3010 | 1309.95 | 1990-06-10 | 2004 | 1002 |
+| 3005 | 5160.45 | 1990-03-10 | 2003 | 1002 |
+| 3009 | 1713.23 | 1990-04-10 | 2002 | 1003 |
+| 3003 |  767.19 | 1990-03-10 | 2001 | 1001 |
++------+---------+------------+------+------+
+10 rows in set (0.01 sec)
+
+11) Find all the customers in SanJose who have a rating above 200.
+
+Command:-
+
+Select * from Customers where CITY = "SanJose" and RATING > 200;
+
+Output:-
+
++------+----------+---------+--------+------+
+| CNUM | CNAME    | CITY    | RATING | SNUM |
++------+----------+---------+--------+------+
+| 2008 | Cisneros | SanJose |    300 | 1007 |
++------+----------+---------+--------+------+
+1 row in set (0.01 sec)
+
+12) List the names and commissions of all salespeople in London.
+
+Command:-
+
+Select SNUM,COMM from Salespeople where CITY = "London";
+
+Output:-
+
++------+------+
+| SNUM | COMM |
++------+------+
+| 1001 |   12 |
+| 1004 |   11 |
+| 1008 |   25 |
++------+------+
+3 rows in set (0.00 sec)
+
+17) Write a query that uses the EXISTS operator to extract all salespeople who have customers with a rating of 300.
+
+Command:-
+
+Select * from salespeople where EXISTS (select RATING from customers where RATING = 300);
+ 
+Output:-
+
++------+---------+-----------+------+
+| SNUM | SNAME   | CITY      | COMM |
++------+---------+-----------+------+
+| 1001 | Peel    | London    |   12 |
+| 1002 | Serres  | SanJose   |   13 |
+| 1004 | Motika  | London    |   11 |
+| 1007 | Rifkin  | Barcelona |   15 |
+| 1003 | AxelRod | New York  |   10 |
+| 1008 | Fran    | London    |   25 |
++------+---------+-----------+------+
+6 rows in set (0.00 sec)
+
+19) Give the salespeople’s commissions as percentages instead of decimal numbers.
+
+Command:-
+
+Select COMM as Percentage from salespeople;
+
+Output:-
+
++------------+
+| Percentage |
++------------+
+|         12 |
+|         13 |
+|         11 |
+|         15 |
+|         10 |
+|         25 |
++------------+
+6 rows in set (0.00 sec)
+
+23) Select all customers with a rating above 200.
+
+Command:-
+
+Select * from Customers where RATING > 200;
+
+Output:-
+
++------+----------+---------+--------+------+
+| CNUM | CNAME    | CITY    | RATING | SNUM |
++------+----------+---------+--------+------+
+| 2004 | Grass    | Berlin  |    300 | 1002 |
+| 2008 | Cisneros | SanJose |    300 | 1007 |
++------+----------+---------+--------+------+
+2 rows in set (0.01 sec)
+
+28) Find all salespeople whose name starts with ‘R’ and fourth character is ‘I’.
+
+Command:-
+
+select * from salespeople where SNAME like 'R___i%';
+
+Output:-
+
++------+--------+-----------+------+
+| SNUM | SNAME  | CITY      | COMM |
++------+--------+-----------+------+
+| 1007 | Rifkin | Barcelona |   15 |
++------+--------+-----------+------+
+1 row in set (0.00 sec)
+
+31) Sort the salespeople table in the following order: snum, sname, commission, city.
+
+Command:-
+
+select SNUM, SNAME, COMM, CITY from salespeople;
+
+Output:-
+
++------+---------+------+-----------+
+| SNUM | SNAME   | COMM | CITY      |
++------+---------+------+-----------+
+| 1001 | Peel    |   12 | London    |
+| 1002 | Serres  |   13 | SanJose   |
+| 1004 | Motika  |   11 | London    |
+| 1007 | Rifkin  |   15 | Barcelona |
+| 1003 | AxelRod |   10 | New York  |
+| 1008 | Fran    |   25 | London    |
++------+---------+------+-----------+
+6 rows in set (0.00 sec)
+
+37) Write a select command that produces the rating followed by the name of each customer in SanJose.
+
+Command:-
+
+Select RATING, CNAME from customers where CITY in ('SanJose');
+
+Output:-
+
++--------+----------+
+| RATING | CNAME    |
++--------+----------+
+|    200 | Liu      |
+|    300 | Cisneros |
++--------+----------+
+2 rows in set (0.00 sec)
+
+42) Count the customers with ratings above SanJose’s average.
+
+Command:-
+
+Select count(CNUM) from customers where RATING > (Select avg(RATING) from customers where CITY  = "SanJose");
+
+Output:-
+
++-------------+
+| count(CNUM) |
++-------------+
+|           2 |
++-------------+
+1 row in set (0.00 sec)
+
+43) Find all salespeople that are located in either Barcelona or London.
+
+Command:-
+
+Select * from salespeople where CITY in ("Barcelona", "London");
+
+Output:-
+
++------+--------+-----------+------+
+| SNUM | SNAME  | CITY      | COMM |
++------+--------+-----------+------+
+| 1001 | Peel   | London    |   12 |
+| 1004 | Motika | London    |   11 |
+| 1007 | Rifkin | Barcelona |   15 |
+| 1008 | Fran   | London    |   25 |
++------+--------+-----------+------+
+4 rows in set (0.00 sec)
+
+46) Write a query that will give you all orders for more than $1000.00.
+
+Command:-
+
+Select * from orders where AMT > 1000;
+
+Output:-
+
++------+---------+------------+------+------+
+| ONUM | AMT     | ODATE      | CNUM | SNUM |
++------+---------+------------+------+------+
+| 3002 | 1900.10 | 1990-03-10 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-03-10 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-03-10 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-04-10 | 2002 | 1003 |
+| 3008 | 4723.00 | 1990-05-10 | 2006 | 1001 |
+| 3010 | 1309.95 | 1990-06-10 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-06-10 | 2006 | 1001 |
++------+---------+------------+------+------+
+7 rows in set (0.00 sec)
+
+49) Write two queries that will produce all orders taken on October 3 or October 4.
+
+Command:-
+
+Select * from orders where ODATE = '1990-03-10' or ODATE = '1990-04-10';
+
+Output:-
+
++------+---------+------------+------+------+
+| ONUM | AMT     | ODATE      | CNUM | SNUM |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-03-10 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-03-10 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-03-10 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-03-10 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-03-10 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-04-10 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-04-10 | 2004 | 1002 |
++------+---------+------------+------+------+
+7 rows in set (0.00 sec)
+
+Command:-
+
+Select * from orders where ODATE = '1990/03/10';
+
+Output:-
+
++------+---------+------------+------+------+
+| ONUM | AMT     | ODATE      | CNUM | SNUM |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-03-10 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-03-10 | 2001 | 1001 |
+| 3002 | 1900.10 | 1990-03-10 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-03-10 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-03-10 | 2008 | 1007 |
++------+---------+------------+------+------+
+5 rows in set (0.00 sec)
+
+Command:-
+
+Select * from orders where ODATE = '1990/04/10';
+
+Output:-
+
++------+---------+------------+------+------+
+| ONUM | AMT     | ODATE      | CNUM | SNUM |
++------+---------+------------+------+------+
+| 3009 | 1713.23 | 1990-04-10 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-04-10 | 2004 | 1002 |
++------+---------+------------+------+------+
+2 rows in set (0.00 sec)
+
+51) Write a query on the Customers table whose output will exclude all customers with a rating<= 100.00, unless they are located in Rome.
+
+Command:-
+
+Select * from customers where Rating <= 100 and CITY != "Rome";
+
+Output:-
+
++------+---------+--------+--------+------+
+| CNUM | CNAME   | CITY   | RATING | SNUM |
++------+---------+--------+--------+------+
+| 2001 | Hoffman | London |    100 | 1001 |
+| 2006 | Clemens | London |    100 | 1001 |
++------+---------+--------+--------+------+
+2 rows in set (0.00 sec)
+
+52) Find all rows from the customer’s table for which the salesperson number is 1001.
+
+Command:-
+
+select * from customers where SNUM = 1001;
+
+Output:-
+
++------+---------+--------+--------+------+
+| CNUM | CNAME   | CITY   | RATING | SNUM |
++------+---------+--------+--------+------+
+| 2001 | Hoffman | London |    100 | 1001 |
+| 2006 | Clemens | London |    100 | 1001 |
++------+---------+--------+--------+------+
+2 rows in set (0.00 sec)
+
+56) Find all salespeople name and commission.
+
+Command:-
+
+Select SNAME, COMM from salespeople;
+
+Output:-
+
++---------+------+
+| SNAME   | COMM |
++---------+------+
+| Peel    |   12 |
+| Serres  |   13 |
+| Motika  |   11 |
+| Rifkin  |   15 |
+| AxelRod |   10 |
+| Fran    |   25 |
++---------+------+
+6 rows in set (0.00 sec)
+
+60) Find the SUM of all Amounts from the orders table.
+
+Command:-
+
+Select sum(AMT) from orders;
+
+Output:-
+
++----------+
+| sum(AMT) |
++----------+
+| 26658.40 |
++----------+
+1 row in set (0.01 sec)
+
+61) Write a SELECT command that produces the order number, amount, and the date from rows in the order table.
+
+Command:-
+
+select ONUM, AMT, ODATE from orders;
+
+Output:-
+
++------+---------+------------+
+| ONUM | AMT     | ODATE      |
++------+---------+------------+
+| 3001 |   18.69 | 1990-03-10 |
+| 3003 |  767.19 | 1990-03-10 |
+| 3002 | 1900.10 | 1990-03-10 |
+| 3005 | 5160.45 | 1990-03-10 |
+| 3006 | 1098.16 | 1990-03-10 |
+| 3009 | 1713.23 | 1990-04-10 |
+| 3007 |   75.75 | 1990-04-10 |
+| 3008 | 4723.00 | 1990-05-10 |
+| 3010 | 1309.95 | 1990-06-10 |
+| 3011 | 9891.88 | 1990-06-10 |
++------+---------+------------+
+10 rows in set (0.00 sec)
+
+62) Count the number of non NULL rating fields in the Customers table (including repeats).
+
+Command:-
+
+Select count(RATING) from customers where RATING is not null;
+
+Output:-
+
++---------------+
+| count(RATING) |
++---------------+
+|             7 |
++---------------+
+1 row in set (0.00 sec)
+
+75) Write a query that lists customers in a descending order of rating. Output the rating field first, followed by the customer’s names and numbers.
+
+Command:-
+
+Select RATING, CNAME, CNUM from customers order by RATING desc;
+
+Output:-
+
++--------+----------+------+
+| RATING | CNAME    | CNUM |
++--------+----------+------+
+|    300 | Grass    | 2004 |
+|    300 | Cisneros | 2008 |
+|    200 | Giovanni | 2002 |
+|    200 | Liu      | 2003 |
+|    100 | Hoffman  | 2001 |
+|    100 | Clemens  | 2006 |
+|    100 | Pereira  | 2007 |
++--------+----------+------+
+7 rows in set (0.00 sec)
+
+76) Find the average commission for salespeople in London.
+
+Command:-
+
+Select avg(COMM) from salespeople where CITY in ("London");
+
+Output:-
+
++-----------+
+| avg(COMM) |
++-----------+
+|   16.0000 |
++-----------+
+1 row in set (0.00 sec)
+
+78) Find all salespeople whose commission is in between 0.10 and 0.12(both inclusive).
+
+Command:-
+
+Select * from salespeople where COMM between 10 and 12;
+
+Output:-
+
++------+---------+----------+------+
+| SNUM | SNAME   | CITY     | COMM |
++------+---------+----------+------+
+| 1001 | Peel    | London   |   12 |
+| 1004 | Motika  | London   |   11 |
+| 1003 | AxelRod | New York |   10 |
++------+---------+----------+------+
+3 rows in set (0.00 sec)
+
+79) Write a query that will give you the names and cities of all salespeople in London with a commission above 0.10.
+
+Command:-
+
+Select SNAME, CITY from salespeople where CITY in ("London") and COMM > 10;
+
+Output:-
+
++--------+--------+
+| SNAME  | CITY   |
++--------+--------+
+| Peel   | London |
+| Motika | London |
+| Fran   | London |
++--------+--------+
+3 rows in set (0.00 sec)
+
+81) Write a query that selects the first customer in alphabetical order whose name begins with ‘G’.
+
+Command:-
+
+Select * from customers where CNAME like "G%" limit 1;
+
+Output:-
+
++------+----------+------+--------+------+
+| CNUM | CNAME    | CITY | RATING | SNUM |
++------+----------+------+--------+------+
+| 2002 | Giovanni | Rome |    200 | 1003 |
++------+----------+------+--------+------+
+1 row in set (0.01 sec)
+
+83) Find the average amount from the Orders Table.
+
+Command:-
+
+Select avg(AMT) from orders;
+
+Output:-
+
++-------------+
+| avg(AMT)    |
++-------------+
+| 2665.840002 |
++-------------+
+1 row in set (0.00 sec)
+
+84) Find all customers who are not located in SanJose and whose rating is above 200.
+
+Command:-
+
+Select * from customers where CITY != ("SanJose") and RATING > 200;
+
+Output:-
+
++------+-------+--------+--------+------+
+| CNUM | CNAME | CITY   | RATING | SNUM |
++------+-------+--------+--------+------+
+| 2004 | Grass | Berlin |    300 | 1002 |
++------+-------+--------+--------+------+
+1 row in set (0.00 sec)
+
+89) Which salesperson has earned the maximum commission?
+
+Command:-
+
+Select * from salespeople where COMM = (select max(COMM) from salespeople);
+
+Output:-
+
++------+-------+--------+------+
+| SNUM | SNAME | CITY   | COMM |
++------+-------+--------+------+
+| 1008 | Fran  | London |   25 |
++------+-------+--------+------+
+1 row in set (0.00 sec)
+
+91) List all customers in descending order of customer rating.
+
+Command:-
+
+Select * from customers order by RATING desc;
+
+Output:-
+
++------+----------+---------+--------+------+
+| CNUM | CNAME    | CITY    | RATING | SNUM |
++------+----------+---------+--------+------+
+| 2004 | Grass    | Berlin  |    300 | 1002 |
+| 2008 | Cisneros | SanJose |    300 | 1007 |
+| 2002 | Giovanni | Rome    |    200 | 1003 |
+| 2003 | Liu      | SanJose |    200 | 1002 |
+| 2001 | Hoffman  | London  |    100 | 1001 |
+| 2006 | Clemens  | London  |    100 | 1001 |
+| 2007 | Pereira  | Rome    |    100 | 1004 |
++------+----------+---------+--------+------+
+7 rows in set (0.00 sec)
+
+95) How many customers have placed orders?
+
+Command:-
+
+Select distinct(count(CNUM)) from customers;
+
+Output:-
+
++---------------+
+| (count(CNUM)) |
++---------------+
+|             7 |
++---------------+
+1 row in set (0.00 sec)
